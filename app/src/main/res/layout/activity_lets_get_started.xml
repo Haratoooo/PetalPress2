@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#6C4BB0"
+    android:padding="24dp">
+
+<LinearLayout
+android:layout_width="match_parent"
+android:layout_height="wrap_content"
+android:orientation="vertical"
+android:gravity="center_horizontal">
+
+<!-- App Logo Text -->
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="PetalPress"
+    android:textColor="#FFFFFF"
+    android:textSize="24sp"
+    android:textStyle="italic"
+    android:layout_marginTop="48dp" />
+
+<!-- Header -->
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Let’s Get Started"
+    android:textColor="#FFFFFF"
+    android:textSize="28sp"
+    android:textStyle="bold"
+    android:layout_marginTop="24dp" />
+
+<!-- Subtext -->
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="Welcome! Choose how you’d like to continue"
+    android:textColor="#E8DAFF"
+    android:textSize="16sp"
+    android:layout_marginTop="8dp"
+    android:gravity="center" />
+
+<!-- Google Button -->
+<Button
+    android:id="@+id/btnGoogle"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Continue with Google"
+    android:drawableStart="@drawable/ic_google"
+    android:background="@drawable/rounded_outline_button"
+    android:textColor="#FFFFFF"
+    android:layout_marginTop="32dp"
+    android:padding="12dp" />
+
+<!-- Apple Button -->
+<Button
+    android:id="@+id/btnApple"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Continue with Apple ID"
+    android:drawableStart="@drawable/ic_apple"
+    android:background="@drawable/rounded_outline_button"
+    android:textColor="#FFFFFF"
+    android:layout_marginTop="16dp"
+    android:padding="12dp" />
+
+<!-- Divider -->
+<View
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="#D3BFFF"
+    android:layout_marginTop="24dp"
+    android:layout_marginBottom="24dp" />
+
+<!-- Sign Up -->
+<Button
+    android:id="@+id/btnSignUp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Sign up"
+    android:background="@drawable/rounded_filled_button"
+    android:textColor="#FFFFFF"
+    android:padding="12dp" />
+
+<!-- Sign In -->
+<Button
+    android:id="@+id/btnSignIn"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Sign in"
+    android:layout_marginTop="12dp"
+    android:background="@drawable/rounded_filled_button"
+    android:textColor="#FFFFFF"
+    android:padding="12dp" />
+
+<!-- Footer Links -->
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_marginTop="32dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Privacy Policy"
+        android:textColor="#E8DAFF"
+        android:textSize="14sp"
+        android:paddingEnd="24dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Terms of Service"
+        android:textColor="#E8DAFF"
+        android:textSize="14sp" />
+</LinearLayout>
+</LinearLayout>
+    </ScrollView>
+
