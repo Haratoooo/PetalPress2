@@ -1,0 +1,14 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <!-- Fully transparent button background -->
+    <solid android:color="@android:color/transparent" />
+
+    <!-- Force bright opaque white stroke -->
+    <stroke
+        android:width="2dp"
+        android:color="#FFFFFFFF" />  <!-- <- Opaque white -->
+
+    <!-- Rounded corners -->
+    <corners android:radius="28dp" />
+</shape>
