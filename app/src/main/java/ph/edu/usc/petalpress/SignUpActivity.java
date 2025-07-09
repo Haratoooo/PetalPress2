@@ -52,6 +52,12 @@ public class SignUpActivity extends AppCompatActivity {
             String pass = passwordEditText.getText().toString();
             String confirm = confirmPasswordEditText.getText().toString();
 
+            // Validate email format
+            if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                Toast.makeText(this, "Enter a valid email address.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             if (!pass.equals(confirm)) {
                 Toast.makeText(this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
                 return;
@@ -63,7 +69,6 @@ public class SignUpActivity extends AppCompatActivity {
                 runOnUiThread(() -> {
                     if (responseCode == 200 || responseCode == 201) {
                         Toast.makeText(this, "Sign-up successful!", Toast.LENGTH_SHORT).show();
-                        // Redirect to WelcomeActivity (optional)
                         Intent intent = new Intent(this, WelcomeActivity.class);
                         intent.putExtra("USER_EMAIL", email);
                         startActivity(intent);
@@ -75,6 +80,7 @@ public class SignUpActivity extends AppCompatActivity {
                 });
             }).start();
         });
+
 
 
     }
