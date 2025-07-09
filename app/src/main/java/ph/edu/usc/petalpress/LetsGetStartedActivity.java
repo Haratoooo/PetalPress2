@@ -1,13 +1,9 @@
-package ph.edu.usc.petalpress.onboarding;
+package ph.edu.usc.petalpress;
 
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
-
-import ph.edu.usc.petalpress.R;
-import ph.edu.usc.petalpress.SignInActivity;
-import ph.edu.usc.petalpress.SignUpActivity;
 
 public class LetsGetStartedActivity extends AppCompatActivity {
     @Override

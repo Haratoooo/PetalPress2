@@ -2,18 +2,21 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_gradient">
+    android:background="@color/light_purple"
+    android:padding="0dp">
 
-    <TextView
-        android:id="@+id/splashText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="PetalPress"
-        android:textSize="32sp"
-        android:textStyle="italic"
-        android:textColor="#FFFFFF"
-        android:layout_centerInParent="true"
-        android:fontFamily="sans-serif-light"
-        android:letterSpacing="0.05" />
+    <!-- Blurred gradient glow (back layer) -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/blur_circle"
+        />
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/petal_background"
+        />
 </RelativeLayout>
 

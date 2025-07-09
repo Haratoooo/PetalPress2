@@ -15,16 +15,11 @@
         android:theme="@style/Theme.PetalPress"
         tools:targetApi="31">
         <activity
-            android:name=".onboarding.LetsGetStartedActivity"
+            android:name=".LetsGetStartedActivity"
             android:exported="false" />
+       
         <activity
-            android:name=".onboarding.OnboardingActivity"
-            android:exported="false" />
-        <activity
-            android:name=".onboarding.SplashActivity"
-            android:exported="false" />
-        <activity
-            android:name=".SignUpActivity"
+            android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

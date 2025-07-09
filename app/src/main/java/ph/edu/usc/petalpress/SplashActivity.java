@@ -1,4 +1,4 @@
-package ph.edu.usc.petalpress.onboarding;
+package ph.edu.usc.petalpress;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -6,19 +6,19 @@ import android.os.Handler;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import ph.edu.usc.petalpress.R;
-
 public class SplashActivity extends AppCompatActivity {
+    private static final int SPLASH_TIME_OUT = 2000; // 2 seconds
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
 
         new Handler().postDelayed(() -> {
-            // Skip to onboarding (no Supabase session check needed here for now)
-            Intent intent = new Intent(SplashActivity.this, OnboardingActivity.class);
-            startActivity(intent);
+            // You can check Supabase session here. If logged in, go to HomePage.
+            // Otherwise, go to OnboardingActivity.
+            startActivity(new Intent(SplashActivity.this, OnboardingActivity.class));
             finish();
-        }, 2000); // 2 seconds
+        }, SPLASH_TIME_OUT);
     }
 }
