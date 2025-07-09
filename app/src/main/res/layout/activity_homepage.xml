@@ -67,7 +67,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="44dp"
-                android:fontFamily="@font/poppins_medium"
+                android:fontFamily="@font/poppins"
                 android:paddingHorizontal="100dp"
                 android:text="#WriteToBloom"
                 android:textAlignment="center"
@@ -116,7 +116,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins_medium"
+                android:fontFamily="@font/poppins"
                 android:paddingLeft="10dp"
                 android:text="Recently Opened"
                 android:textColor="@android:color/white"
@@ -160,7 +160,7 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_semibold"
+                            android:fontFamily="@font/poppins"
                             android:layout_marginTop="4dp"
                             android:text="Heart Archives"
                             android:textColor="@android:color/white"
@@ -172,7 +172,7 @@
                             android:text="Entries: 3"
                             android:textColor="@android:color/white"
                             android:textSize="10sp"
-                            android:fontFamily="@font/poppins_medium"/>
+                            android:fontFamily="@font/poppins"/>
 
                     </LinearLayout>
 
@@ -196,7 +196,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins_medium"
+                            android:fontFamily="@font/poppins"
                             android:paddingLeft="10dp"
                             android:text="Journals You Created"
                             android:textColor="@android:color/white"
@@ -253,7 +253,7 @@
                                     android:text="Hamilton..."
                                     android:textColor="@android:color/white"
                                     android:textSize="15sp"
-                                    android:fontFamily="@font/poppins_semibold" />
+                                    android:fontFamily="@font/poppins" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -262,7 +262,7 @@
                                     android:text="A space to pour my thoughts during the calmest time of day — early mornings with coffee and silence."
                                     android:textColor="#CCFFFFFF"
                                     android:textSize="12sp"
-                                    android:fontFamily="@font/poppins_medium" />
+                                    android:fontFamily="@font/poppins" />
                             </LinearLayout>
                         </LinearLayout>
 
