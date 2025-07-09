@@ -52,12 +52,19 @@ public class SignUpActivity extends AppCompatActivity {
             String pass = passwordEditText.getText().toString();
             String confirm = confirmPasswordEditText.getText().toString();
 
-            // Validate email format
+            // 🚨 Check for empty fields first
+            if (email.isEmpty() || pass.isEmpty() || confirm.isEmpty()) {
+                Toast.makeText(this, "Please fill in all fields.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            // 🧠 Validate email format
             if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
                 Toast.makeText(this, "Enter a valid email address.", Toast.LENGTH_SHORT).show();
                 return;
             }
 
+            // 🔐 Check if passwords match
             if (!pass.equals(confirm)) {
                 Toast.makeText(this, "Passwords do not match!", Toast.LENGTH_SHORT).show();
                 return;
@@ -80,7 +87,6 @@ public class SignUpActivity extends AppCompatActivity {
                 });
             }).start();
         });
-
 
 
     }
