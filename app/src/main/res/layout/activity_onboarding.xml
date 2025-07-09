@@ -5,7 +5,6 @@
     android:background="@color/light_purple"
     android:padding="0dp">
 
-    <!-- Background Glow (blurred gradient circle) -->
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,7 +12,6 @@
         android:src="@drawable/blur_circle"
         android:contentDescription="Background Glow" />
 
-    <!-- Petal Pattern Overlay -->
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -21,7 +19,6 @@
         android:src="@drawable/petal_background"
         android:contentDescription="Petal Background" />
 
-    <!-- Top Logo -->
     <ImageView
         android:id="@+id/topLogo"
         android:layout_width="wrap_content"
