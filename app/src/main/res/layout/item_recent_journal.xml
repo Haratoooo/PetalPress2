@@ -1,0 +1,33 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="95dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_marginEnd="25dp">
+
+    <ImageView
+        android:id="@+id/journalImage"
+        android:layout_width="match_parent"
+        android:layout_height="135dp"
+        android:scaleType="centerCrop"
+        android:background="@drawable/rounded_image_bg"
+        android:clipToOutline="true" />
+
+    <TextView
+        android:id="@+id/journalTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Title"
+        android:textColor="@android:color/white"
+        android:textSize="12sp"
+        android:fontFamily="@font/poppins_semibold"
+        android:layout_marginTop="4dp" />
+
+    <TextView
+        android:id="@+id/journalEntryCount"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Entries: 0"
+        android:textColor="@android:color/white"
+        android:textSize="10sp"
+        android:fontFamily="@font/poppins_medium" />
+</LinearLayout>

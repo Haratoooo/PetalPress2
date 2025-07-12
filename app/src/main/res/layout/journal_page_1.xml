@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--TEMP ONLY-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="108dp"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/journal_card_bg"
+        android:elevation="9dp">
+
+        <ImageView
+            android:layout_width="62dp"
+            android:layout_height="88dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/journal_cover_test"
+            android:background="@drawable/rounded_image_bg"
+            android:clipToOutline="true"
+            android:layout_marginEnd="16dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hamilton"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_semibold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="A space to pour my thoughts during the calmest time of day — early mornings with coffee and silence."
+                android:textColor="#CCFFFFFF"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="108dp"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/journal_card_bg"
+        android:elevation="9dp">
+
+        <ImageView
+            android:layout_width="62dp"
+            android:layout_height="88dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/journal_cover_test"
+            android:background="@drawable/rounded_image_bg"
+            android:clipToOutline="true"
+            android:layout_marginEnd="16dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hamilton"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_semibold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="A space to pour my thoughts during the calmest time of day — early mornings with coffee and silence."
+                android:textColor="#CCFFFFFF"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="108dp"
+        android:orientation="horizontal"
+        android:padding="10dp"
+        android:layout_marginBottom="14dp"
+        android:background="@drawable/journal_card_bg"
+        android:elevation="9dp">
+
+        <ImageView
+            android:layout_width="62dp"
+            android:layout_height="88dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/journal_cover_test"
+            android:background="@drawable/rounded_image_bg"
+            android:clipToOutline="true"
+            android:layout_marginEnd="16dp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hamilton"
+                android:textColor="@android:color/white"
+                android:textSize="16sp"
+                android:fontFamily="@font/poppins_semibold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="2dp"
+                android:text="A space to pour my thoughts during the calmest time of day — early mornings with coffee and silence."
+                android:textColor="#CCFFFFFF"
+                android:textSize="12sp"
+                android:fontFamily="@font/poppins" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
