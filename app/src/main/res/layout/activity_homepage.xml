@@ -4,10 +4,10 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Homepage"
-    android:background="#D592DE">
+    android:background="#D592DE"
+    tools:context=".Homepage">
 
-    <!--  Background Image -->
+    <!-- Background Image -->
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -15,83 +15,98 @@
         android:scaleType="centerCrop"
         android:contentDescription="@null" />
 
-    <!--  Header -->
+    <!-- Header -->
     <LinearLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="#645095"
-        android:gravity="center"
         android:orientation="horizontal"
-        android:paddingTop="50dp"
-        android:paddingBottom="16dp"
-        android:elevation="8dp">
+        android:gravity="center"
+        android:padding="16dp"
+        android:elevation="8dp"
+        android:background="#645095">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:fontFamily="@font/bonheur_royale"
             android:text="PetalPress"
+            android:textSize="31sp"
             android:textColor="@android:color/white"
-            android:textSize="31sp" />
+            android:fontFamily="@font/bonheur_royale" />
     </LinearLayout>
 
-
-    <!--  Scrollable Part -->
+    <!-- Scrollable Content -->
     <ScrollView
-        android:layout_above="@+id/bottom_nav_wrapper"
-        android:layout_below="@+id/header"
+        android:layout_below="@id/header"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-
         <LinearLayout
-            android:orientation="vertical"
-            android:padding="16dp"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp">
 
+            <!-- Headline -->
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="55dp"
-                android:layout_marginBottom="33dp"
-                android:fontFamily="@font/noto_serif"
-                android:paddingHorizontal="100dp"
-                android:text="Your Story Matters"
+                android:layout_marginTop="33dp"
+                android:text="Your"
+                android:textSize="48sp"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
-                android:textSize="48sp" />
+                android:fontFamily="@font/noto_serif" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="44dp"
-                android:fontFamily="@font/poppins"
+                android:layout_marginTop="-10dp"
+                android:text="Story"
+                android:textSize="48sp"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/noto_serif" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="-10dp"
+                android:layout_marginBottom="15dp"
+                android:text="Matters"
+                android:textSize="48sp"
+                android:textAlignment="center"
+                android:textColor="#FFFFFF"
+                android:fontFamily="@font/noto_serif" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="33dp"
                 android:paddingHorizontal="100dp"
                 android:text="#WriteToBloom"
+                android:textSize="14sp"
                 android:textAlignment="center"
                 android:textColor="#FFFFFF"
-                android:textSize="14sp" />
+                android:fontFamily="@font/poppins" />
 
+            <!-- Search Bar -->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
+                android:layout_marginBottom="33dp"
                 android:layout_marginHorizontal="24dp"
-                android:orientation="horizontal"
                 android:paddingHorizontal="16dp"
-                android:layout_marginBottom="29dp"
+                android:orientation="horizontal"
                 android:gravity="center_vertical"
                 android:background="@drawable/searchbar_bg">
 
-                <!-- 🔍 Search Icon -->
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_search"
-                    android:layout_marginEnd="8dp" />
+                    android:layout_marginEnd="8dp"
+                    android:src="@drawable/ic_search" />
 
-                <!-- ✏️ Input Field -->
                 <EditText
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
@@ -101,204 +116,153 @@
                     android:textColor="#6BFFFFFF"
                     android:background="@android:color/transparent"
                     android:inputType="text"
-                    android:padding="0dp"/>
+                    android:padding="0dp" />
 
-                <!-- 📊 Filter Icon -->
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:src="@drawable/ic_filter"
-                    android:layout_marginStart="8dp" />
+                    android:layout_marginStart="8dp"
+                    android:src="@drawable/ic_filter" />
             </LinearLayout>
 
-
-            <!--  Recently Opened Title -->
+            <!-- Recently Opened -->
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/poppins"
-                android:paddingLeft="10dp"
                 android:text="Recently Opened"
-                android:textColor="@android:color/white"
                 android:textSize="16sp"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:fontFamily="@font/poppins"
+                android:paddingLeft="10dp" />
 
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="31dp"
-                android:background="#80FFFFFF" /> <!-- white with 50% opacity -->
+                android:background="#80FFFFFF" />
 
-
-            <!--  Horizontal Scroll View -->
-            <HorizontalScrollView
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recentlyOpenedRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingHorizontal="10dp"
                 android:layout_marginBottom="29dp"
-                android:scrollbars="none">
+                android:paddingHorizontal="10dp"
+                android:clipToPadding="false"
+                android:overScrollMode="never"
+                tools:listitem="@layout/item_recent_journal" />
+
+            <!-- Journals You Created -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:layout_marginBottom="8dp"
+                android:orientation="horizontal"
+                android:paddingHorizontal="16dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Journals You Created"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@android:color/white"
+                    android:fontFamily="@font/poppins"
+                    android:layout_weight="1"/>
 
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    >
 
-                    <!--  Example Journal Card -->
-                    <LinearLayout
-                        android:layout_width="95dp"
+                    <ImageView
+                        android:id="@+id/arrowLeft"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:layout_marginEnd="12dp">
+                        android:layout_marginEnd="12dp"
+                        android:src="@drawable/ic_arrow_left"
+                        android:contentDescription="Previous Page" />
 
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="134dp"
-                            android:src="@drawable/hamilton"
-                            android:scaleType="centerCrop" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins"
-                            android:layout_marginTop="4dp"
-                            android:text="Heart Archives"
-                            android:textColor="@android:color/white"
-                            android:textSize="12sp" />
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Entries: 3"
-                            android:textColor="@android:color/white"
-                            android:textSize="10sp"
-                            android:fontFamily="@font/poppins"/>
-
-                    </LinearLayout>
-
-                    <!-- Add more cards as needed -->
-                </LinearLayout>
-            </HorizontalScrollView>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                >
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="horizontal"
-                        >
-
-                        <!--  Journals You Created Title -->
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/poppins"
-                            android:paddingLeft="10dp"
-                            android:text="Journals You Created"
-                            android:textColor="@android:color/white"
-                            android:textSize="16sp"
-                            android:textStyle="bold" />
-
-<!--                        Move right and left between pages here-->
-
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginTop="3dp"
-                        android:layout_marginBottom="31dp"
-                        android:background="#80FFFFFF" /> <!-- white with 50% opacity -->
-
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <TextView
+                        android:id="@+id/pageIndicator"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingHorizontal="10dp"
-                        android:layout_marginBottom="100dp">
+                        android:layout_marginEnd="12dp"
+                        android:text="1 / 1"
+                        android:textSize="16sp"
+                        android:textColor="@android:color/white"
+                        android:fontFamily="@font/poppins_medium" />
 
-                        <!-- 📓 Single Journal Card -->
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:padding="12dp"
-                            android:layout_marginBottom="14dp"
-                            android:background="@drawable/journal_card_bg"
-                            android:elevation="6dp">
-
-                            <!-- Journal Image -->
-                            <ImageView
-                                android:layout_width="70dp"
-                                android:layout_height="match_parent"
-                                android:scaleType="centerCrop"
-                                android:src="@drawable/hamilton"
-                                android:layout_marginEnd="12dp" />
-
-                            <!-- Title + Description -->
-                            <LinearLayout
-                                android:layout_width="0dp"
-                                android:layout_height="wrap_content"
-                                android:layout_weight="1"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:text="Hamilton..."
-                                    android:textColor="@android:color/white"
-                                    android:textSize="15sp"
-                                    android:fontFamily="@font/poppins" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="2dp"
-                                    android:text="A space to pour my thoughts during the calmest time of day — early mornings with coffee and silence."
-                                    android:textColor="#CCFFFFFF"
-                                    android:textSize="12sp"
-                                    android:fontFamily="@font/poppins" />
-                            </LinearLayout>
-                        </LinearLayout>
-
-                        <!-- Repeat this card layout for Heart Archives & Wanderlight -->
-                    </LinearLayout>
-
+                    <ImageView
+                        android:id="@+id/arrowRight"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_arrow_right"
+                        android:contentDescription="Next Page" />
                 </LinearLayout>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginTop="3dp"
+                android:layout_marginBottom="16dp"
+                android:background="#80FFFFFF" />
+
+            <ViewFlipper
+                android:id="@+id/journalFlipper"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:autoStart="false"
+                android:inAnimation="@android:anim/slide_in_left"
+                android:outAnimation="@android:anim/slide_out_right"
+                android:layout_marginBottom="110dp"
+                />
 
         </LinearLayout>
-
     </ScrollView>
 
-    <!-- Wrapper for custom bottom nav background and menu -->
+    <!-- Bottom Navigation -->
     <RelativeLayout
-        android:id="@+id/bottom_nav_wrapper"
-        android:layout_width="353.5dp"
-        android:layout_height="71.27dp"
-        android:layout_centerHorizontal="true"
+        android:id="@+id/bottom_nav_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="16dp"
-        android:clipToOutline="true"
-        android:elevation="4dp"
-        android:background="@drawable/bottom_nav">
+        android:layout_marginBottom="25dp">
 
-        <!-- The actual bottom nav -->
-        <com.google.android.material.bottomnavigation.BottomNavigationView
-            android:id="@+id/bottom_navigation"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@android:color/transparent"
-            style="@style/CustomBottomNavStyle"
-            app:menu="@menu/bottom_nav_menu"
-            app:labelVisibilityMode="unlabeled"
-            app:itemIconTint="@color/white"
-            app:itemTextColor="@color/white"/>
+        <LinearLayout
+            android:id="@+id/bottom_nav_wrapper"
+            android:layout_width="353dp"
+            android:layout_height="71.27dp"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:background="@drawable/bottom_nav"
+            android:elevation="4dp">
 
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
+                android:src="@drawable/navbar_home_2"
+                android:contentDescription="Home" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="30dp"
+                android:src="@drawable/navbar_addjournal_1"
+                android:contentDescription="Add Journal" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/navbar_settings_1"
+                android:contentDescription="Settings" />
+        </LinearLayout>
     </RelativeLayout>
 
 </RelativeLayout>
