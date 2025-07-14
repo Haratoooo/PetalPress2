@@ -5,6 +5,7 @@
     android:background="@color/light_purple"
     android:padding="0dp">
 
+    <!-- Background layers -->
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -19,64 +20,42 @@
         android:src="@drawable/petal_background"
         android:contentDescription="Petal Background" />
 
+    <!-- Top logo centered -->
     <ImageView
         android:id="@+id/topLogo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
         android:layout_marginTop="32dp"
-        android:layout_marginEnd="24dp"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true"
         android:src="@drawable/petalpress"
-        android:contentDescription="PetalPress Logo" />
+        android:contentDescription="PetalPress Logo"
+        android:scaleType="fitCenter" />
 
-    <!-- Title and Subtitle -->
-    <LinearLayout
-        android:id="@+id/textBlock"
+    <!-- ViewPager2 for onboarding fragments -->
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:layout_centerInParent="true"
-        android:paddingHorizontal="32dp">
+        android:layout_height="0dp"
+        android:layout_below="@id/topLogo"
+        android:layout_above="@id/dotIndicator"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp" />
 
-        <TextView
-            android:id="@+id/titleText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:fontFamily="@font/noto_serif_semibold"
-            android:gravity="left"
-            android:text="Write\nDaily\nEntries!"
-            android:textColor="@android:color/white"
-            android:textSize="50sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/subtitleText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:fontFamily="@font/noto_serif"
-            android:gravity="left"
-            android:lineSpacingExtra="4dp"
-            android:text="Reflect on your thoughts and emotions, one entry at a time."
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
-    </LinearLayout>
-
-    <!-- Dot Indicator -->
+    <!-- Dot Indicator moved above CTA -->
     <ImageView
         android:id="@+id/dotIndicator"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textBlock"
+        android:layout_above="@+id/ctaLayout"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="32dp"
+        android:layout_marginBottom="16dp"
         android:src="@drawable/dot_indicator_1"
         android:contentDescription="Onboarding Progress Dots" />
 
-    <!-- CTA and Button -->
+    <!-- CTA and Button container -->
     <LinearLayout
+        android:id="@+id/ctaLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -104,4 +83,5 @@
             android:textColor="@android:color/white"
             android:textSize="16sp" />
     </LinearLayout>
+
 </RelativeLayout>
