@@ -34,7 +34,7 @@ public class Homepage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homepage);
 
-        // Recently Opened Setup
+        // Setup Recently Opened RecyclerView
         recentlyOpenedRecyclerView = findViewById(R.id.recentlyOpenedRecyclerView);
         recentlyOpenedRecyclerView.setLayoutManager(
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -44,13 +44,12 @@ public class Homepage extends AppCompatActivity {
         adapter = new RecentlyOpenedAdapter(this, journalList);
         recentlyOpenedRecyclerView.setAdapter(adapter);
 
-        // Journals You Created Setup (ViewFlipper)
+        // Setup ViewFlipper for 'Journals You Created'
         journalFlipper = findViewById(R.id.journalFlipper);
         arrowLeft = findViewById(R.id.arrowLeft);
         arrowRight = findViewById(R.id.arrowRight);
         pageIndicator = findViewById(R.id.pageIndicator);
 
-        // Inflate 3 example pages
         LayoutInflater inflater = LayoutInflater.from(this);
         View page1 = inflater.inflate(R.layout.journal_page_1, journalFlipper, false);
         View page2 = inflater.inflate(R.layout.journal_page_2, journalFlipper, false);
@@ -58,10 +57,8 @@ public class Homepage extends AppCompatActivity {
         journalFlipper.addView(page1);
         journalFlipper.addView(page2);
 
-        // Show initial page number
         updatePageIndicator();
 
-        // Navigation arrows
         arrowLeft.setOnClickListener(v -> {
             journalFlipper.showPrevious();
             updatePageIndicator();

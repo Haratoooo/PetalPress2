@@ -1,11 +1,9 @@
 package ph.edu.usc.petalpress;
 
 import android.content.Context;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 
-// mostly temporary ; feel free to change
 public class Journal {
     private String title;
     private int entryCount;
@@ -32,4 +30,3 @@ public class Journal {
     public int getEntryCount() { return entryCount; }
     public int getImageResId() { return imageResId; }
 }
-

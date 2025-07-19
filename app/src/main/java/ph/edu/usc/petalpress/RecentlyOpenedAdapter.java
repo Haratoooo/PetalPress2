@@ -1,11 +1,14 @@
 package ph.edu.usc.petalpress;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
@@ -19,18 +22,27 @@ public class RecentlyOpenedAdapter extends RecyclerView.Adapter<RecentlyOpenedAd
         this.journalList = journalList;
     }
 
+    @NonNull
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context).inflate(R.layout.item_recent_journal, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Journal journal = journalList.get(position);
+
         holder.titleTextView.setText(journal.getTitle());
-        holder.entryCountTextView.setText("Entries: " + journal.getEntryCount());
+        holder.entryCountTextView.setText(journal.getEntryCount() + " entries");
         holder.imageView.setImageResource(journal.getImageResId());
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(context, EntriesList.class);
+            intent.putExtra("title", journal.getTitle());
+            intent.putExtra("imageResId", journal.getImageResId());
+            context.startActivity(intent);
+        });
     }
 
     @Override
@@ -42,7 +54,7 @@ public class RecentlyOpenedAdapter extends RecyclerView.Adapter<RecentlyOpenedAd
         ImageView imageView;
         TextView titleTextView, entryCountTextView;
 
-        public ViewHolder(View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.journalImage);
             titleTextView = itemView.findViewById(R.id.journalTitle);
@@ -50,4 +62,3 @@ public class RecentlyOpenedAdapter extends RecyclerView.Adapter<RecentlyOpenedAd
         }
     }
 }
-
