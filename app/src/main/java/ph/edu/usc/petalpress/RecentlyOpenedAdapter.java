@@ -41,6 +41,7 @@ public class RecentlyOpenedAdapter extends RecyclerView.Adapter<RecentlyOpenedAd
             Intent intent = new Intent(context, EntriesList.class);
             intent.putExtra("title", journal.getTitle());
             intent.putExtra("imageResId", journal.getImageResId());
+            intent.putExtra("journal_id", journal.getId()); // Make sure journal.getId() exists
             context.startActivity(intent);
         });
     }

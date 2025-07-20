@@ -1,6 +1,9 @@
 package ph.edu.usc.petalpress;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -14,8 +17,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class Homepage extends AppCompatActivity {
 
     private RecyclerView recentlyOpenedRecyclerView;
     private RecentlyOpenedAdapter adapter;
-    private List<Journal> journalList;
+    private List<Journal> journalList = new ArrayList<>();
 
     private ViewFlipper journalFlipper;
     private ImageView arrowLeft, arrowRight;
@@ -40,9 +41,18 @@ public class Homepage extends AppCompatActivity {
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         );
 
-        journalList = loadJournalsFromJson();
         adapter = new RecentlyOpenedAdapter(this, journalList);
         recentlyOpenedRecyclerView.setAdapter(adapter);
+
+        // Load journals in background thread
+        new Thread(() -> {
+            List<Journal> fetched = loadJournalsFromSupabase();
+            runOnUiThread(() -> {
+                journalList.clear();
+                journalList.addAll(fetched);
+                adapter.notifyDataSetChanged();
+            });
+        }).start();
 
         // Setup ViewFlipper for 'Journals You Created'
         journalFlipper = findViewById(R.id.journalFlipper);
@@ -76,21 +86,32 @@ public class Homepage extends AppCompatActivity {
         pageIndicator.setText(current + " / " + total);
     }
 
-    private List<Journal> loadJournalsFromJson() {
+    private List<Journal> loadJournalsFromSupabase() {
         List<Journal> journals = new ArrayList<>();
         try {
-            InputStream is = getResources().openRawResource(R.raw.recent_journals);
-            byte[] buffer = new byte[is.available()];
-            is.read(buffer);
-            is.close();
-            String json = new String(buffer, StandardCharsets.UTF_8);
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+            String token = prefs.getString("access_token", null);
+
+            if (token == null) {
+                Log.e("Homepage", "Access token missing");
+                return journals;
+            }
+
+            String json = SupabaseService.fetchJournals(token);
+            if (json == null) return journals;
 
             JSONArray array = new JSONArray(json);
             for (int i = 0; i < array.length(); i++) {
                 JSONObject obj = array.getJSONObject(i);
-                journals.add(Journal.fromJson(this, obj));
-            }
+                String id = obj.getString("id");
+                String title = obj.getString("title");
+                int entryCount = obj.getInt("entry_count");
+                String imageName = obj.getString("image_name");
+                String createdAt = obj.getString("created_at");
 
+                int imageResId = getResources().getIdentifier(imageName, "drawable", getPackageName());
+                journals.add(new Journal(id, title, entryCount, imageResId, createdAt));
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
