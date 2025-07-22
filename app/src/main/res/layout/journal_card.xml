@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/journalCardRoot"
+    android:layout_width="match_parent"
+    android:layout_height="108dp"
+    android:orientation="horizontal"
+    android:padding="10dp"
+    android:layout_marginBottom="14dp"
+    android:background="@drawable/journal_card_bg"
+    android:elevation="9dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?attr/selectableItemBackground">
+
+
+    <ImageView
+        android:id="@+id/journalImage"
+        android:layout_width="62dp"
+        android:layout_height="88dp"
+        android:scaleType="centerCrop"
+        android:background="@drawable/rounded_image_bg"
+        android:clipToOutline="true"
+        android:layout_marginEnd="16dp" />
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/journalTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Title"
+            android:textColor="@android:color/white"
+            android:textSize="16sp"
+            android:fontFamily="@font/poppins_semibold" />
+
+        <TextView
+            android:id="@+id/journalDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="2dp"
+            android:text="Description"
+            android:textColor="#CCFFFFFF"
+            android:textSize="12sp"
+            android:fontFamily="@font/poppins" />
+    </LinearLayout>
+</LinearLayout>

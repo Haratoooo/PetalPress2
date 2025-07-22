@@ -1,10 +1,15 @@
 package ph.edu.usc.petalpress;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -22,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 public class EntriesList extends AppCompatActivity {
 
+    private static final String TAG = "EntriesList";
     private RecyclerView entryRecyclerView;
     private EntryAdapter entryAdapter;
     private List<Entry> entries;
@@ -31,32 +37,68 @@ public class EntriesList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_entries_list);
 
+        TextView journalTitleText = findViewById(R.id.journalTitle);
+        TextView journalDescText = findViewById(R.id.journalDescription);
+        ImageView journalImageView = findViewById(R.id.journalImage);
+
+        ImageButton backButton = findViewById(R.id.backButton);
+        backButton.setOnClickListener(v -> {
+            Intent intent = new Intent(EntriesList.this, Homepage.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
+            startActivity(intent);
+            finish(); // ✅ Optional: prevents returning to EntriesList
+        });
+
+
+
+        // 🔍 Log received Intent values
+        String journalTitleStr = getIntent().getStringExtra("journal_title");
+        String description = getIntent().getStringExtra("journal_description");
+        int imageResId = getIntent().getIntExtra("journal_image", -1);
+        String journalId = getIntent().getStringExtra("journal_id");
+
+        Log.d("IntentDebug", "Received title: " + journalTitleStr
+                + ", desc: " + description
+                + ", imageResId: " + imageResId);
+
+
+        // 🖼 Set header content
+        journalTitleText.setText(journalTitleStr != null ? journalTitleStr : "(No Title)");
+        journalDescText.setText(description != null ? description : "(No Description)");
+        if (imageResId != -1) journalImageView.setImageResource(imageResId);
+
+        // 🧱 RecyclerView setup
         entryRecyclerView = findViewById(R.id.entryRecyclerView);
         entryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
-
         entries = new ArrayList<>();
         entryAdapter = new EntryAdapter(entries);
         entryRecyclerView.setAdapter(entryAdapter);
 
-        // Get journal_id from intent
-        String journalId = getIntent().getStringExtra("journal_id");
+        // ❌ Validate journal_id
         if (journalId == null || journalId.isEmpty()) {
-            Log.e("EntriesList", "Missing journal_id");
+            Log.e(TAG, "Missing journal_id");
             return;
         }
 
-        // Get access token
+        // 🔑 Retrieve access token
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         String token = prefs.getString("access_token", null);
         if (token == null) {
-            Log.e("EntriesList", "Missing access token");
+            Log.e(TAG, "Missing access token");
             return;
         }
 
-        // Fetch entries in background
+        // 📡 Fetch entries in background
         new Thread(() -> {
+            Log.d(TAG, "Fetching entries for journal_id: " + journalId);
             String response = SupabaseService.fetchEntries(token, journalId);
-            if (response == null) return;
+
+            if (response == null) {
+                Log.e(TAG, "Entries response is null");
+                return;
+            }
+
+            Log.d(TAG, "Entries response: " + response);
 
             try {
                 JSONArray array = new JSONArray(response);
@@ -83,10 +125,11 @@ public class EntriesList extends AppCompatActivity {
                     entries.clear();
                     entries.addAll(fetchedEntries);
                     entryAdapter.notifyDataSetChanged();
+                    Log.d(TAG, "Fetched " + fetchedEntries.size() + " entries.");
                 });
 
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.e(TAG, "Error parsing entries", e);
             }
         }).start();
     }
@@ -119,4 +162,7 @@ public class EntriesList extends AppCompatActivity {
             return "";
         }
     }
+
+
 }
+

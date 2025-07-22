@@ -2,6 +2,7 @@ package ph.edu.usc.petalpress;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,10 +39,16 @@ public class RecentlyOpenedAdapter extends RecyclerView.Adapter<RecentlyOpenedAd
         holder.imageView.setImageResource(journal.getImageResId());
 
         holder.itemView.setOnClickListener(v -> {
+            Log.d("RecentlyOpenedAdapter", "Sending intent - title: " + journal.getTitle() +
+                    ", desc: " + journal.getDescription() +
+                    ", imageResId: " + journal.getImageResId());
+
             Intent intent = new Intent(context, EntriesList.class);
-            intent.putExtra("title", journal.getTitle());
-            intent.putExtra("imageResId", journal.getImageResId());
-            intent.putExtra("journal_id", journal.getId()); // Make sure journal.getId() exists
+            intent.putExtra("journal_id", journal.getId());
+            intent.putExtra("journal_title", journal.getTitle());
+            intent.putExtra("journal_description", journal.getDescription());
+            intent.putExtra("journal_image", journal.getImageResId());
+
             context.startActivity(intent);
         });
     }

@@ -73,14 +73,15 @@
             android:textColor="@android:color/white"
             android:textSize="16sp" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/getStartedButton"
             android:layout_width="250dp"
             android:layout_height="55dp"
-            android:background="@drawable/white_border_button"
+            android:background="@drawable/rounded_outline_button"
             android:fontFamily="@font/noto_serif"
             android:text="Let’s Get Started"
             android:textColor="@android:color/white"
+            android:textAllCaps="false"
             android:textSize="16sp" />
     </LinearLayout>
 

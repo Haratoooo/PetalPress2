@@ -10,13 +10,14 @@ public class Journal {
     private int entryCount;
     private int imageResId;
     private String createdAt;
-
-    public Journal(String id, String title, int entryCount, int imageResId, String createdAt) {
+    private String description;
+    public Journal(String id, String title, int entryCount, int imageResId, String createdAt, String description) {
         this.id = id;
         this.title = title;
         this.entryCount = entryCount;
         this.imageResId = imageResId;
         this.createdAt = createdAt;
+        this.description = description;
     }
 
     public static Journal fromJson(Context context, JSONObject obj) throws JSONException {
@@ -25,11 +26,12 @@ public class Journal {
         int entryCount = obj.getInt("entry_count");  // match Supabase field
         String imageName = obj.getString("image_name");
         String createdAt = obj.optString("created_at", "");  // optional to prevent crash
+        String description = obj.getString("description");
 
         int imageResId = context.getResources().getIdentifier(
                 imageName, "drawable", context.getPackageName());
 
-        return new Journal(id, title, entryCount, imageResId, createdAt);
+        return new Journal(id, title, entryCount, imageResId, createdAt, description);
     }
 
     public String getId() { return id; }
@@ -37,5 +39,5 @@ public class Journal {
     public int getEntryCount() { return entryCount; }
     public int getImageResId() { return imageResId; }
     public String getCreatedAt() { return createdAt; }
-
+    public String getDescription() { return description; }
 }

@@ -1,0 +1,12 @@
+<!-- res/drawable/rounded_button_red.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+
+    <solid android:color="#D32F2F" /> <!-- Material red 700 -->
+    <corners android:radius="24dp" />
+    <padding
+        android:left="16dp"
+        android:top="8dp"
+        android:right="16dp"
+        android:bottom="8dp" />
+</shape>
