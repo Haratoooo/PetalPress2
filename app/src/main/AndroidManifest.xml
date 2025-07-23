@@ -15,9 +15,11 @@
         android:theme="@style/Theme.PetalPress"
         tools:targetApi="31">
         <activity
+            android:name=".AddJournalActivity"
+            android:exported="false" />
+        <activity
             android:name=".LetsGetStartedActivity"
             android:exported="false" />
-       
         <activity
             android:name=".SplashActivity"
             android:exported="true">
