@@ -1,7 +1,9 @@
 package ph.edu.usc.petalpress;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.method.LinkMovementMethod;
@@ -14,41 +16,38 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import org.json.JSONObject;
+
 public class SignInActivity extends AppCompatActivity {
 
     EditText emailEditText, passwordEditText;
-    Button signupButton; // it's your "Sign in" button
+    Button signupButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.signin); // or your XML file
+        setContentView(R.layout.signin);
 
         emailEditText = findViewById(R.id.emailEditText);
         passwordEditText = findViewById(R.id.passwordEditText);
         signupButton = findViewById(R.id.signupButton);
-        // ID is still "signupButton"
         TextView signupText = findViewById(R.id.signupText);
 
+        // "Sign-up" clickable span
         String fullText = "Don't have an account? Sign-up";
         SpannableString spannable = new SpannableString(fullText);
-
         int start = fullText.indexOf("Sign-up");
         int end = start + "Sign-up".length();
 
-        ClickableSpan clickableSpan = new ClickableSpan() {
+        spannable.setSpan(new ClickableSpan() {
             @Override
             public void onClick(View widget) {
-                Intent intent = new Intent(SignInActivity.this, SignUpActivity.class);
-                startActivity(intent);
+                startActivity(new Intent(SignInActivity.this, SignUpActivity.class));
             }
-        };
-
-        spannable.setSpan(clickableSpan, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }, start, end, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         signupText.setText(spannable);
         signupText.setMovementMethod(LinkMovementMethod.getInstance());
-
 
         signupButton.setOnClickListener(v -> {
             String email = emailEditText.getText().toString().trim();
@@ -60,18 +59,31 @@ public class SignInActivity extends AppCompatActivity {
             }
 
             new Thread(() -> {
-                int code = SupabaseService.signIn(email, password);
+                // Get token from Supabase
+                String tokenJson = SupabaseService.signInAndGetToken(SignInActivity.this, email, password);
 
                 runOnUiThread(() -> {
-                    if (code == 200) {
-                        Intent intent = new Intent(this, WelcomeActivity.class);
-                        intent.putExtra("USER_EMAIL", email);
-                        startActivity(intent);
-                        finish();
-                    } else if (code == 400) {
-                        Toast.makeText(this, "Invalid email or password", Toast.LENGTH_SHORT).show();
+                    if (tokenJson != null) {
+                        try {
+                            JSONObject obj = new JSONObject(tokenJson);
+                            String accessToken = obj.getString("access_token");
+
+                            // Save token to SharedPreferences
+                            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+                            prefs.edit().putString("access_token", accessToken).apply();
+
+                            // Go to homepage
+                            Intent intent = new Intent(this, WelcomeActivity.class);
+                            intent.putExtra("USER_EMAIL", email);
+                            startActivity(intent);
+                            finish();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                            Toast.makeText(this, "Error parsing token", Toast.LENGTH_SHORT).show();
+                        }
                     } else {
-                        Toast.makeText(this, "Login failed! Code: " + code, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(this, "Login failed! Check credentials.", Toast.LENGTH_SHORT).show();
                     }
                 });
             }).start();

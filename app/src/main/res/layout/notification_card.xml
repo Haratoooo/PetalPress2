@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="96dp"
+    android:layout_marginBottom="16dp"
+    android:background="@drawable/rounded_card_bg">
+
+    <!-- Background image (optional for glow/frost effect) -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="centerCrop"
+        android:src="@drawable/rounded_card_bg"
+        android:alpha="0.3" />
+
+    <!-- Foreground content -->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <!-- Notification icon -->
+        <ImageView
+            android:id="@+id/notificationIcon"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginEnd="12dp"
+            android:layout_centerVertical="true"
+            android:src="@drawable/ic_bell" />
+
+        <!-- Title -->
+        <TextView
+            android:id="@+id/notificationTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/notificationIcon"
+            android:layout_alignTop="@id/notificationIcon"
+            android:text="Journal Entry"
+            android:textColor="@android:color/white"
+            android:textStyle="bold"
+            android:textSize="16sp" />
+
+        <!-- Description -->
+        <TextView
+            android:id="@+id/notificationDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/notificationTitle"
+            android:layout_alignStart="@id/notificationTitle"
+            android:text="Don't forget to log your thoughts today in 'Morning Whispers.'"
+            android:textColor="@android:color/white"
+            android:textSize="12sp"
+            android:layout_marginTop="4dp" />
+
+        <!-- Timestamp -->
+        <TextView
+            android:id="@+id/notificationTimestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:text="5 minutes ago"
+            android:textColor="@android:color/white"
+            android:textSize="10sp" />
+    </RelativeLayout>
+</FrameLayout>

@@ -46,13 +46,14 @@
             android:layout_marginBottom="60dp"
             android:src="@drawable/petal_press_logo" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/startWritingButton"
             android:layout_width="250dp"
             android:layout_height="55dp"
             android:layout_marginTop="32dp"
-            android:background="@drawable/white_border_button"
+            android:background="@drawable/rounded_outline_button"
             android:text="Start Writing"
+            android:textAllCaps="false"
             android:textColor="@android:color/white"
             android:textSize="16sp" />
     </LinearLayout>

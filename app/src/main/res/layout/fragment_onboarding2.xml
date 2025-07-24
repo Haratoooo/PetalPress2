@@ -1,28 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
+    android:gravity="center"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center_horizontal"
-    android:background="@drawable/bg_gradient"
-    android:padding="24dp">
+    android:padding="32dp">
 
     <TextView
+        android:id="@+id/titleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Let’s\nwrite your\nJournal!"
-        android:textSize="32sp"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold"
+        android:text="Let's\nwrite your\nJournal!"
+        android:textSize="42sp"
+        android:fontFamily="@font/noto_serif_semibold"
+        android:textColor="@android:color/white"
         android:gravity="center"
-        android:layout_marginTop="96dp" />
+        android:layout_marginTop="96dp"
+        android:lineSpacingExtra="8dp" />
 
     <TextView
+        android:id="@+id/subtitleText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Connect with yourself and\ndocument your journey today."
-        android:textSize="16sp"
+        android:text="Connect with yourself and\n document your journey\n today."
+        android:textSize="18sp"
+        android:fontFamily="@font/noto_serif"
         android:textColor="#F3E9FF"
         android:gravity="center"
-        android:layout_marginTop="24dp" />
+        android:layout_marginTop="32dp" />
 </LinearLayout>
