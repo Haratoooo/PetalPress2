@@ -1,5 +1,6 @@
 package ph.edu.usc.petalpress;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,11 +8,14 @@ import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -36,6 +40,8 @@ public class EntriesList extends AppCompatActivity {
     private List<Entry> filteredEntries;  // List to hold filtered entries
     private EditText searchBar;  // Search bar reference
 
+    private String journalId;  // Add this to hold the current journal ID
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,11 +59,11 @@ public class EntriesList extends AppCompatActivity {
             finish(); // ✅ Optional: prevents returning to EntriesList
         });
 
-        // 🔍 Log received Intent values
+        // 🖼 Log received Intent values
         String journalTitleStr = getIntent().getStringExtra("journal_title");
         String description = getIntent().getStringExtra("journal_description");
         int imageResId = getIntent().getIntExtra("journal_image", -1);
-        String journalId = getIntent().getStringExtra("journal_id");
+        journalId = getIntent().getStringExtra("journal_id");  // Get the journal ID
 
         Log.d("IntentDebug", "Received title: " + journalTitleStr
                 + ", desc: " + description
@@ -151,8 +157,35 @@ public class EntriesList extends AppCompatActivity {
                 Log.e(TAG, "Error parsing entries", e);
             }
         }).start();
+
+        // Handle the delete button click
+        ImageButton deleteJournalButton = findViewById(R.id.deleteJournalButton);
+        deleteJournalButton.setOnClickListener(v -> showDeleteConfirmationDialog());
     }
 
+    // Show the delete journal confirmation dialog
+    private void showDeleteConfirmationDialog() {
+        new AlertDialog.Builder(this)
+                .setTitle("Delete Journal")
+                .setMessage("Are you sure you want to delete this Journal?")
+                .setCancelable(false)
+                .setPositiveButton("Confirm", (dialog, which) -> {
+                    // Handle journal deletion
+                    deleteJournal();
+                })
+                .setNegativeButton("Cancel", null)
+                .show();
+    }
+
+    // Delete the journal (connect with Supabase to delete from the database)
+    private void deleteJournal() {
+        // Your code to delete the journal from Supabase
+        Log.d(TAG, "Journal " + journalId + " deleted.");
+        Toast.makeText(this, "Journal deleted", Toast.LENGTH_SHORT).show();
+        finish(); // Optionally finish the activity after deletion
+    }
+
+    // Format the date to display
     private String formatDate(String isoDate) {
         try {
             SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
@@ -164,6 +197,7 @@ public class EntriesList extends AppCompatActivity {
         }
     }
 
+    // Get the time ago (e.g., "5 minutes ago")
     private String getTimeAgo(String isoDate) {
         try {
             SimpleDateFormat parser = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault());
