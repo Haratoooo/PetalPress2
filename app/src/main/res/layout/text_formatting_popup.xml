@@ -1,0 +1,152 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="209dp"
+    android:layout_height="300dp"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/text_formatting_popup_bg"
+    android:elevation="8dp">
+
+    <!-- Horizontal Scroll for Font, Size, Color, Bold, etc. -->
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="5dp"
+        android:scrollbars="none"
+        >
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <!-- Font selection -->
+            <Spinner
+                android:id="@+id/font_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:entries="@array/font_array"
+                android:paddingHorizontal="5dp"
+                android:layout_marginHorizontal="5dp"/>
+
+            <!-- Text Size selection -->
+            <Spinner
+                android:id="@+id/size_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:entries="@array/size_array"
+                android:paddingHorizontal="5dp"
+                android:layout_marginHorizontal="5dp"/>
+
+            <!-- Bold Button -->
+            <ImageButton
+                android:id="@+id/bold_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_bold"
+                android:contentDescription="Bold"
+                android:background="?android:attr/selectableItemBackground"
+                />
+
+            <!-- Italic Button -->
+            <ImageButton
+                android:id="@+id/italic_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_italicize"
+                android:contentDescription="Italic"
+                android:background="?android:attr/selectableItemBackground"
+                />
+
+            <!-- Underline Button -->
+            <ImageButton
+                android:id="@+id/underline_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_underline"
+                android:contentDescription="Underline"
+                android:background="?android:attr/selectableItemBackground"
+                />
+
+            <!-- Strikethrough Button -->
+            <ImageButton
+                android:id="@+id/strikethrough_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_strikethrough"
+                android:contentDescription="Strikethrough"
+                android:background="?android:attr/selectableItemBackground"
+                />
+
+<!--            &lt;!&ndash; Text Color selection &ndash;&gt;-->
+<!--            <ImageButton-->
+<!--                android:id="@+id/color_btn"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:src="@drawable/ic_color"-->
+<!--                android:contentDescription="Color"-->
+<!--                android:background="?android:attr/selectableItemBackground"-->
+<!--                android:padding="10dp" />-->
+<!--            this is a tad too difficult rn-->
+        </LinearLayout>
+    </HorizontalScrollView>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#965C538E"
+        android:layout_marginVertical="6dp"/>
+
+    <!-- Vertical Scroll for Text Formats -->
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginVertical="5dp">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <!-- Text formatting options like Heading 1, Heading 2, etc. -->
+            <TextView
+                android:id="@+id/heading1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Heading 1"
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/heading2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Heading 2"
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/heading3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Heading 3"
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/subheading"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Subheading"
+                android:padding="8dp"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <!-- Add more text formats as needed -->
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
