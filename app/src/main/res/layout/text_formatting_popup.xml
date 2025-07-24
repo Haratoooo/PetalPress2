@@ -8,7 +8,7 @@
 
     <!-- Horizontal Scroll for Font, Size, Color, Bold, etc. -->
     <HorizontalScrollView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="5dp"
         android:scrollbars="none"
@@ -22,22 +22,24 @@
             <!-- Font selection -->
             <Spinner
                 android:id="@+id/font_spinner"
-                android:layout_width="wrap_content"
+                android:layout_width="120dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:entries="@array/font_array"
-                android:paddingHorizontal="5dp"
-                android:layout_marginHorizontal="5dp"/>
+                android:paddingHorizontal="10dp"
+                android:layout_marginHorizontal="5dp"
+                />
 
             <!-- Text Size selection -->
             <Spinner
                 android:id="@+id/size_spinner"
-                android:layout_width="wrap_content"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:entries="@array/size_array"
-                android:paddingHorizontal="5dp"
-                android:layout_marginHorizontal="5dp"/>
+                android:paddingHorizontal="10dp"
+                android:layout_marginHorizontal="5dp"
+                />
 
             <!-- Bold Button -->
             <ImageButton
