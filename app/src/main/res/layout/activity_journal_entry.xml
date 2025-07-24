@@ -91,7 +91,6 @@
                 android:background="?android:attr/selectableItemBackground"
                 android:layout_marginRight="20dp"/>
 
-
             <ImageButton
                 android:id="@+id/redobtn"
                 android:layout_width="wrap_content"
