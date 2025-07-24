@@ -106,41 +106,7 @@ public class AddJournalActivity extends AppCompatActivity {
         }
     }
 
-    private void uploadImageThenSaveJournal(Uri uri) {
-        new Thread(() -> {
-            try {
-                InputStream inputStream = getContentResolver().openInputStream(uri);
-                String fileName = UUID.randomUUID().toString() + ".jpg";
-                URL url = new URL("https://etfmwhmqmnnsatkirrkx.supabase.co/storage/v1/object/images/" + fileName);
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestMethod("PUT");
-                conn.setRequestProperty("Authorization", "Bearer " + userToken);
-                conn.setRequestProperty("apikey", SupabaseService.getApiKey());
-                conn.setRequestProperty("Content-Type", "image/jpeg");
-                conn.setDoOutput(true);
 
-                try (OutputStream os = conn.getOutputStream()) {
-                    byte[] buffer = new byte[4096];
-                    int bytesRead;
-                    while ((bytesRead = inputStream.read(buffer)) != -1) {
-                        os.write(buffer, 0, bytesRead);
-                    }
-                }
-
-                int responseCode = conn.getResponseCode();
-                if (responseCode == 200 || responseCode == 201) {
-                    String imageUrl = "https://etfmwhmqmnnsatkirrkx.supabase.co/storage/v1/object/public/images/" + fileName;
-                    saveJournalToSupabase(imageUrl);
-                } else {
-                    runOnUiThread(() -> Toast.makeText(this, "Image upload failed!", Toast.LENGTH_SHORT).show());
-                }
-
-            } catch (Exception e) {
-                e.printStackTrace();
-                runOnUiThread(() -> Toast.makeText(this, "Error uploading image", Toast.LENGTH_SHORT).show());
-            }
-        }).start();
-    }
     public String saveImageToInternalStorage(Bitmap bitmap, String filename) {
         try {
             File file = new File(getFilesDir(), filename);
@@ -154,30 +120,6 @@ public class AddJournalActivity extends AppCompatActivity {
         }
     }
 
-    private void saveJournalToSupabase(String imageUrl) {
-        String journalId = UUID.randomUUID().toString();
-        String title = editTitle.getText().toString();
-        String description = editDescription.getText().toString();
 
-
-        new Thread(() -> {
-            int response = SupabaseService.insertJournal(
-                    userToken,
-                    journalId,
-                    userId,
-                    title,
-                    description,
-                    imageUrl != null ? imageUrl : ""
-            );
-
-            runOnUiThread(() -> {
-                if (response == 201 || response == 200) {
-                    Toast.makeText(this, "Journal created successfully", Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    Toast.makeText(this, "Failed to create journal. Code: " + response, Toast.LENGTH_SHORT).show();
-                }
-            });
-        }).start();
     }
-}
+
