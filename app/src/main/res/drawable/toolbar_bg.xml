@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Set the background color -->
+    <solid android:color="#DBD9D9D9"/>  <!-- Dark color for the toolbar background -->
+
+    <!-- Set rounded corners for the bottom only -->
+    <corners
+        android:bottomLeftRadius="9dp"
+        android:bottomRightRadius="9dp"
+        android:topLeftRadius="0dp"
+        android:topRightRadius="0dp"/>
+</shape>
