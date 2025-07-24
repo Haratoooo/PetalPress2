@@ -4,13 +4,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
+import android.widget.LinearLayout;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -27,10 +30,13 @@ public class Homepage extends AppCompatActivity {
     private RecyclerView recentlyOpenedRecyclerView;
     private RecentlyOpenedAdapter adapter;
     private List<Journal> journalList = new ArrayList<>();
+    private List<Journal> filteredJournalList = new ArrayList<>(); // For recently opened
+    private List<Journal> filteredCreatedJournals = new ArrayList<>(); // For journals you created
 
     private ViewFlipper journalFlipper;
     private ImageView arrowLeft, arrowRight;
     private TextView pageIndicator;
+    private EditText searchBar; // Search bar reference
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +49,7 @@ public class Homepage extends AppCompatActivity {
                 new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
         );
 
-        adapter = new RecentlyOpenedAdapter(this, journalList);
+        adapter = new RecentlyOpenedAdapter(this, filteredJournalList); // Use filtered list
         recentlyOpenedRecyclerView.setAdapter(adapter);
 
         // Setup ViewFlipper for 'Journals You Created'
@@ -62,6 +68,29 @@ public class Homepage extends AppCompatActivity {
             updatePageIndicator();
         });
 
+        // Setup Settings Button
+        ImageView navSettings = findViewById(R.id.nav_settings);
+        navSettings.setOnClickListener(v -> {
+            // Navigate to SettingsActivity when settings icon is clicked
+            Intent intent = new Intent(Homepage.this, Settings.class);
+            startActivity(intent);
+        });
+
+        // Setup the search bar functionality
+        searchBar = findViewById(R.id.searchBar); // Now this refers to the correct ID in your layout
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                filterJournals(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
+
         // Load journals in background thread
         new Thread(() -> {
             List<Journal> fetched = loadJournalsFromSupabase();
@@ -69,6 +98,14 @@ public class Homepage extends AppCompatActivity {
             runOnUiThread(() -> {
                 journalList.clear();
                 journalList.addAll(fetched);
+
+                // Initially show all journals in both lists
+                filteredJournalList.clear();
+                filteredJournalList.addAll(fetched); // Recently Opened list
+
+                filteredCreatedJournals.clear();
+                filteredCreatedJournals.addAll(fetched); // Journals You Created list
+
                 adapter.notifyDataSetChanged();
 
                 populateJournalFlipper(); // 🔧 Call dynamic flipper population
@@ -121,7 +158,8 @@ public class Homepage extends AppCompatActivity {
         int pageSize = 3;
         LayoutInflater inflater = LayoutInflater.from(this);
 
-        for (int i = 0; i < journalList.size(); i += pageSize) {
+        // Populate for 'Journals You Created' (filteredCreatedJournals)
+        for (int i = 0; i < filteredCreatedJournals.size(); i += pageSize) {
             LinearLayout pageLayout = new LinearLayout(this);
             pageLayout.setOrientation(LinearLayout.VERTICAL);
             pageLayout.setLayoutParams(new LinearLayout.LayoutParams(
@@ -129,8 +167,8 @@ public class Homepage extends AppCompatActivity {
                     LinearLayout.LayoutParams.WRAP_CONTENT
             ));
 
-            int end = Math.min(i + pageSize, journalList.size());
-            List<Journal> pageJournals = journalList.subList(i, end);
+            int end = Math.min(i + pageSize, filteredCreatedJournals.size());
+            List<Journal> pageJournals = filteredCreatedJournals.subList(i, end);
 
             for (Journal journalObj : pageJournals) {
                 final Journal journal = journalObj;  // 🟣 prevent loop mutation bug
@@ -161,7 +199,6 @@ public class Homepage extends AppCompatActivity {
                             + ", desc: " + journal.getDescription()
                             + ", imageResId: " + journal.getImageResId());
 
-
                     startActivity(intent);
                 });
 
@@ -172,5 +209,32 @@ public class Homepage extends AppCompatActivity {
         }
 
         updatePageIndicator();
+    }
+
+    // Filter journals by title
+    private void filterJournals(String query) {
+        // Filter Recently Opened list
+        List<Journal> filteredList = new ArrayList<>();
+        for (Journal journal : journalList) {
+            if (journal.getTitle().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(journal);
+            }
+        }
+
+        filteredJournalList.clear();
+        filteredJournalList.addAll(filteredList); // Update the filtered list for recently opened journals
+        adapter.notifyDataSetChanged(); // Notify the adapter to update the RecyclerView
+
+        // Filter Journals You Created list
+        List<Journal> filteredCreatedList = new ArrayList<>();
+        for (Journal journal : journalList) {
+            if (journal.getTitle().toLowerCase().contains(query.toLowerCase())) {
+                filteredCreatedList.add(journal);
+            }
+        }
+
+        filteredCreatedJournals.clear();
+        filteredCreatedJournals.addAll(filteredCreatedList); // Update the filtered list for created journals
+        populateJournalFlipper(); // Update the ViewFlipper for 'Journals You Created'
     }
 }

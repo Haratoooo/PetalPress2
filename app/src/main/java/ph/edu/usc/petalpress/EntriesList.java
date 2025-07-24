@@ -4,12 +4,14 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,6 +33,8 @@ public class EntriesList extends AppCompatActivity {
     private RecyclerView entryRecyclerView;
     private EntryAdapter entryAdapter;
     private List<Entry> entries;
+    private List<Entry> filteredEntries;  // List to hold filtered entries
+    private EditText searchBar;  // Search bar reference
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,8 +53,6 @@ public class EntriesList extends AppCompatActivity {
             finish(); // ✅ Optional: prevents returning to EntriesList
         });
 
-
-
         // 🔍 Log received Intent values
         String journalTitleStr = getIntent().getStringExtra("journal_title");
         String description = getIntent().getStringExtra("journal_description");
@@ -61,7 +63,6 @@ public class EntriesList extends AppCompatActivity {
                 + ", desc: " + description
                 + ", imageResId: " + imageResId);
 
-
         // 🖼 Set header content
         journalTitleText.setText(journalTitleStr != null ? journalTitleStr : "(No Title)");
         journalDescText.setText(description != null ? description : "(No Description)");
@@ -70,9 +71,26 @@ public class EntriesList extends AppCompatActivity {
         // 🧱 RecyclerView setup
         entryRecyclerView = findViewById(R.id.entryRecyclerView);
         entryRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         entries = new ArrayList<>();
-        entryAdapter = new EntryAdapter(entries);
+        filteredEntries = new ArrayList<>();  // Initialize filteredEntries
+        entryAdapter = new EntryAdapter(filteredEntries);  // Pass filtered entries to the adapter
         entryRecyclerView.setAdapter(entryAdapter);
+
+        // Setup search bar functionality
+        searchBar = findViewById(R.id.searchBar); // The ID of your search bar EditText
+        searchBar.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
+                filterEntries(charSequence.toString());  // Filter entries as the text changes
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {}
+        });
 
         // ❌ Validate journal_id
         if (journalId == null || journalId.isEmpty()) {
@@ -124,6 +142,7 @@ public class EntriesList extends AppCompatActivity {
                 runOnUiThread(() -> {
                     entries.clear();
                     entries.addAll(fetchedEntries);
+                    filterEntries("");  // Initially show all entries when data is fetched
                     entryAdapter.notifyDataSetChanged();
                     Log.d(TAG, "Fetched " + fetchedEntries.size() + " entries.");
                 });
@@ -163,6 +182,18 @@ public class EntriesList extends AppCompatActivity {
         }
     }
 
+    // Filter the entries based on the search query
+    private void filterEntries(String query) {
+        List<Entry> filteredList = new ArrayList<>();
+        for (Entry entry : entries) {
+            if (entry.getTitle().toLowerCase().contains(query.toLowerCase()) ||
+                    entry.getContent().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(entry);
+            }
+        }
 
+        filteredEntries.clear();
+        filteredEntries.addAll(filteredList); // Update the filtered list
+        entryAdapter.notifyDataSetChanged(); // Notify the adapter to update the RecyclerView
+    }
 }
-
