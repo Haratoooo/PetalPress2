@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="12dp">
+
+    <!-- Entry Date Label -->
+    <TextView
+        android:id="@+id/entryDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Yesterday, 23 Apr. 2025"
+        android:textColor="@android:color/white"
+        android:textSize="14sp"
+        android:fontFamily="@font/noto_serif"
+        android:textStyle="bold"
+        android:layout_marginBottom="8dp" />
+
+    <!-- Entry Card -->
+    <LinearLayout
+        android:id="@+id/entryCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@drawable/rounded_card_bg"
+        android:padding="16dp"
+        android:elevation="4dp">
+
+        <!-- Entry Title and Menu -->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/entryTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Coffee and Clarity"
+                android:textColor="#000000"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:fontFamily="@font/noto_serif" />
+
+            <ImageView
+                android:id="@+id/entryMenu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:src="@drawable/ic_more_vert"
+                android:contentDescription="More Options" />
+        </RelativeLayout>
+
+        <!-- Mood Tags -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="8dp">
+
+            <ImageView
+                android:id="@+id/moodTag1"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginEnd="8dp"
+                android:src="@drawable/ic_mood_yellow"
+                android:contentDescription="Mood Tag 1" />
+
+            <ImageView
+                android:id="@+id/moodTag2"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:src="@drawable/ic_mood_green"
+                android:contentDescription="Mood Tag 2" />
+        </LinearLayout>
+
+        <!-- Time Ago -->
+        <TextView
+            android:id="@+id/entryTimeAgo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="16 hours ago"
+            android:textColor="#666666"
+            android:textSize="12sp"
+            android:fontFamily="@font/noto_serif" />
+
+    </LinearLayout>
+</LinearLayout>

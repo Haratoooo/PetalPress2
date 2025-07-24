@@ -15,10 +15,7 @@
         android:theme="@style/Theme.PetalPress"
         tools:targetApi="31">
         <activity
-            android:name=".AddJournalActivity"
-            android:exported="false" />
-        <activity
-            android:name=".LetsGetStartedActivity"
+
             android:exported="false" />
         <activity
             android:name=".SplashActivity"
@@ -29,8 +26,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".OnboardingActivity" />
         <activity android:name=".SignInActivity" />
+        <activity android:name=".SignUpActivity" />
         <activity android:name=".WelcomeActivity" />
+        <activity android:name=".LetsGetStartedActivity" />
+        <activity android:name=".Homepage" />
+        <activity android:name=".EntriesList" />
     </application>
 
 </manifest>
