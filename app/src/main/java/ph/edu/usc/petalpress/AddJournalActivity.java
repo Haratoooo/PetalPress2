@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.EditText;
@@ -15,13 +14,14 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.supabase.gotrue.GotrueSession;
-import com.supabase.supabase.SupabaseClient;
-import com.supabase.supabase.SupabaseException;
-import com.supabase.supabase.SupabaseTable;
-import com.supabase.supabase.models.User;
+import io.supabase.gotrue.GotrueSession;
+import io.supabase.supabase.SupabaseClient;
+import io.supabase.supabase.SupabaseException;
+import io.supabase.supabase.SupabaseTable;
+import io.supabase.storage.StorageClient;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.UUID;
 
 public class AddJournalActivity extends AppCompatActivity {
@@ -38,8 +38,11 @@ public class AddJournalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_journal);
 
-        // Initialize Supabase client
-        supabaseClient = new SupabaseClient();
+        // Initialize Supabase client with URL and API Key
+        supabaseClient = new SupabaseClient.Builder()
+                .url("https://supabase.com/dashboard/project/etfmwhmqmnnsatkirrkx") // Your Supabase URL
+                .apikey("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0Zm13aG1xbW5uc2F0a2lycmt4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE5NTAwODgsImV4cCI6MjA2NzUyNjA4OH0.TihBvneGpMnny29L9GU7i5Mn3I12jyc3HLv0I5qxPZQ") // Your Supabase API Key
+                .build();
 
         // Find views
         imagePreview = findViewById(R.id.imagePreview);
@@ -69,8 +72,13 @@ public class AddJournalActivity extends AppCompatActivity {
                 return;
             }
 
-            // Save journal to Supabase
-            saveJournalToSupabase(title, description);
+            if (imageUri != null) {
+                // Upload the image and then save journal
+                uploadImageToSupabase(imageUri);
+            } else {
+                // If no image selected, save without the image
+                saveJournalToSupabase(null);
+            }
         });
     }
 
@@ -99,9 +107,36 @@ public class AddJournalActivity extends AppCompatActivity {
         }
     }
 
+    // Upload image to Supabase Storage
+    private void uploadImageToSupabase(Uri imageUri) {
+        // Get the Supabase Storage client
+        StorageClient storageClient = supabaseClient.storage().from("images");  // Assuming 'images' is your bucket name
+
+        // Convert the URI to an InputStream
+        try {
+            InputStream inputStream = getContentResolver().openInputStream(imageUri);
+            String fileName = UUID.randomUUID().toString() + ".jpg"; // Generate a unique file name
+
+            // Upload image to Supabase Storage
+            storageClient.upload(fileName, inputStream)
+                    .onSuccess(result -> {
+                        // Get the public URL of the uploaded image
+                        String imageUrl = result.publicUrl();
+                        saveJournalToSupabase(imageUrl); // Save the journal with the image URL
+                    })
+                    .onFailure(exception -> {
+                        // Handle failure
+                        Toast.makeText(this, "Image upload failed: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
+                    });
+        } catch (IOException e) {
+            e.printStackTrace();
+            Toast.makeText(this, "Error opening image", Toast.LENGTH_SHORT).show();
+        }
+    }
+
     // Save journal to Supabase
-    private void saveJournalToSupabase(String title, String description) {
-        // Prepare Supabase session to get current user ID
+    private void saveJournalToSupabase(String imageUrl) {
+        // Get Supabase session and user
         GotrueSession session = supabaseClient.auth.getSession();
         User currentUser = session.getUser();
 
@@ -110,30 +145,26 @@ public class AddJournalActivity extends AppCompatActivity {
             return;
         }
 
-        // Generate unique journal ID
+        // Generate a unique journal ID
         String journalId = UUID.randomUUID().toString();
 
-        // If image is selected, upload it to Supabase storage (this can be expanded to support image upload functionality)
-        String imageUrl = null; // Placeholder for the image URL after upload
-
-        // Call Supabase API to insert the journal record into the `journals` table
+        // Prepare the data to insert into Supabase table
         SupabaseTable journalsTable = supabaseClient.from("journals");
 
         try {
             journalsTable.insert()
                     .values(
                             "id", journalId,
-                            "title", title,
-                            "description", description,
+                            "title", editTitle.getText().toString(),
+                            "description", editDescription.getText().toString(),
                             "user_id", currentUser.getId(),
-                            "image_name", imageUrl,  // This can be the image URL after uploading
+                            "image_name", imageUrl, // Save the image URL
                             "entry_count", 0 // Set initial entry count to 0
                     )
                     .execute();
 
-            // Notify user and close the activity
             Toast.makeText(this, "Journal created successfully", Toast.LENGTH_SHORT).show();
-            finish();
+            finish(); // Close the activity and return to the homepage
 
         } catch (SupabaseException e) {
             e.printStackTrace();
