@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/entry___start">
+
+    <!-- Top Curved Background Image (full width) -->
+    <ImageView
+        android:id="@+id/topBackground"
+        android:layout_width="match_parent"
+        android:layout_height="140dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/logo_background_shape"
+        android:layout_alignParentTop="true"
+        android:contentDescription="Top background" />
+
+    <!-- Inner Content Wrapper with Padding -->
+    <RelativeLayout
+        android:id="@+id/contentWrapper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="24dp">
+
+        <!-- PetalPress Logo -->
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="24dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_back_arrow"
+            android:contentDescription="Back Button"
+            android:clickable="true"
+            android:focusable="true" />
+
+        <ImageView
+            android:id="@+id/topLogo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="24dp"
+            android:src="@drawable/petalpress"
+            android:contentDescription="PetalPress Logo" />
+
+        <!-- Title Prompt -->
+        <TextView
+            android:id="@+id/titlePrompt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/topLogo"
+            android:layout_marginTop="48dp"
+            android:layout_centerHorizontal="true"
+            android:text="Enter your Title"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/white"
+            android:paddingTop="45dp"
+            android:fontFamily="@font/noto_serif_semibold" />
+
+        <!-- Title Input Box -->
+        <EditText
+            android:id="@+id/titleInput"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_below="@id/titlePrompt"
+            android:layout_marginTop="16dp"
+            android:background="#CAB3EA"
+            android:padding="16dp"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#AAAAAA"
+            android:fontFamily="@font/noto_serif" />
+
+        <!-- Date -->
+        <TextView
+            android:id="@+id/dateText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/titleInput"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:text="April 21, 2025"
+            android:textSize="12sp"
+            android:textColor="#E2D1F9"
+            android:fontFamily="@font/poppins" />
+
+        <!-- Mood Box -->
+        <LinearLayout
+            android:id="@+id/moodBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/dateText"
+            android:layout_marginTop="32dp"
+            android:orientation="vertical"
+            android:background="@drawable/rounded_shadow_box"
+            android:padding="24dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="How are you feeling?"
+                android:textSize="16sp"
+                android:textColor="@android:color/white"
+                android:fontFamily="@font/noto_serif"
+                android:layout_marginBottom="16dp" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginBottom="16dp"
+                android:background="#80FFFFFF" />
+
+            <!-- Mood Buttons -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_horizontal"
+                android:layout_marginBottom="16dp">
+
+                <Button
+                    android:id="@+id/moodHappy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="😊 Happy"
+                    android:backgroundTint="#B5EAD7"
+                    android:textColor="#000000"
+                    android:layout_marginEnd="12dp"
+                    android:background="@drawable/pill_button" />
+
+                <Button
+                    android:id="@+id/moodSad"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="😢 Sad"
+                    android:backgroundTint="#C7CEEA"
+                    android:textColor="#000000"
+                    android:layout_marginEnd="12dp"
+                    android:background="@drawable/pill_button" />
+
+                <Button
+                    android:id="@+id/moodAdd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="40dp"
+                    android:text="Add +"
+                    android:backgroundTint="#E2D1F9"
+                    android:textColor="#000000"
+                    android:background="@drawable/pill_button" />
+            </LinearLayout>
+
+            <!-- Entry Text Field -->
+            <EditText
+                android:id="@+id/journalEntryText"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:hint="Write your thoughts here..."
+                android:background="#CAB3EA"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#DDDDDD"
+                android:fontFamily="@font/noto_serif"
+                android:gravity="top"
+                android:padding="12dp"
+                android:inputType="textMultiLine"
+                android:maxLines="6" />
+        </LinearLayout>
+
+
+        <!-- Continue Button -->
+        <Button
+            android:id="@+id/continueButton"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_alignParentBottom="true"
+            android:text="Continue"
+            android:background="@drawable/white_border_button"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp"
+            android:fontFamily="@font/noto_serif" />
+    </RelativeLayout>
+</RelativeLayout>
