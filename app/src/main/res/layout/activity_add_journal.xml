@@ -77,7 +77,7 @@
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
                     android:src="@drawable/img"
-                    android:background="@drawable/rounded_border"
+                    android:background="@drawable/rounded_border_button"
                     android:contentDescription="Add Journal Cover Photo" />
 
                 <!-- Overlay Text on Image -->

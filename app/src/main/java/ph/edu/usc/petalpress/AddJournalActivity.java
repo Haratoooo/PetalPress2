@@ -5,23 +5,18 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.TextUtils;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.Toast;
-
+import android.widget.*;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import io.supabase.gotrue.GotrueSession;
-import io.supabase.supabase.SupabaseClient;
-import io.supabase.supabase.SupabaseException;
-import io.supabase.supabase.SupabaseTable;
-import io.supabase.storage.StorageClient;
-
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.UUID;
 
 public class AddJournalActivity extends AppCompatActivity {
@@ -31,73 +26,77 @@ public class AddJournalActivity extends AppCompatActivity {
     private ImageView imagePreview;
     private EditText editTitle, editDescription;
     private Button btnCreate, btnCancel;
-    private SupabaseClient supabaseClient;
+
+    private String userToken;
+    private String userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_journal);
 
-        // Initialize Supabase client with URL and API Key
-        supabaseClient = new SupabaseClient.Builder()
-                .url("https://supabase.com/dashboard/project/etfmwhmqmnnsatkirrkx") // Your Supabase URL
-                .apikey("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV0Zm13aG1xbW5uc2F0a2lycmt4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTE5NTAwODgsImV4cCI6MjA2NzUyNjA4OH0.TihBvneGpMnny29L9GU7i5Mn3I12jyc3HLv0I5qxPZQ") // Your Supabase API Key
-                .build();
-
-        // Find views
         imagePreview = findViewById(R.id.imagePreview);
         editTitle = findViewById(R.id.editTitle);
         editDescription = findViewById(R.id.editDescription);
         btnCreate = findViewById(R.id.btnCreate);
         btnCancel = findViewById(R.id.btnCancel);
 
-        // Image picker on cover photo click
-        imagePreview.setOnClickListener(v -> openImagePicker());
+        userToken = getIntent().getStringExtra("user_token");
+        userId = getIntent().getStringExtra("user_id");
 
-        // Handle Cancel button click (finish activity)
+        imagePreview.setOnClickListener(v -> openImagePicker());
         btnCancel.setOnClickListener(v -> finish());
 
-        // Handle Create button click (validate and submit)
         btnCreate.setOnClickListener(v -> {
             String title = editTitle.getText().toString().trim();
             String description = editDescription.getText().toString().trim();
 
-            // Validate input fields
-            if (TextUtils.isEmpty(title)) {
-                Toast.makeText(this, "Please enter a title", Toast.LENGTH_SHORT).show();
-                return;
-            }
-            if (TextUtils.isEmpty(description)) {
-                Toast.makeText(this, "Please enter a description", Toast.LENGTH_SHORT).show();
+            if (TextUtils.isEmpty(title) || TextUtils.isEmpty(description)) {
+                Toast.makeText(this, "Please fill in all fields", Toast.LENGTH_SHORT).show();
                 return;
             }
 
+            String id = UUID.randomUUID().toString();
+            String createdAt = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
+            String imagePath = null;
+
             if (imageUri != null) {
-                // Upload the image and then save journal
-                uploadImageToSupabase(imageUri);
-            } else {
-                // If no image selected, save without the image
-                saveJournalToSupabase(null);
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+                    imagePath = saveImageToInternalStorage(bitmap, id + ".jpg");
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    Toast.makeText(this, "Failed to save image", Toast.LENGTH_SHORT).show();
+                }
             }
+
+            JournalRepository repo = new JournalRepository(this);
+            repo.insertJournal(id, title, description, createdAt, imagePath);
+            Intent intent = new Intent(AddJournalActivity.this, EntriesList.class);
+            intent.putExtra("journal_id", id);
+            intent.putExtra("journal_title", title);
+            intent.putExtra("journal_description", description);
+            intent.putExtra("journal_image_path", imagePath);
+            startActivity(intent);
+            finish(); // Optional: close AddJournalActivity
+
+
+            Toast.makeText(this, "Journal saved locally 🎉", Toast.LENGTH_SHORT).show();
+            finish();
         });
     }
 
-    // Open image picker to choose a cover photo
-    private void openImagePicker() {
+        private void openImagePicker() {
         Intent intent = new Intent(Intent.ACTION_PICK);
         intent.setType("image/*");
         startActivityForResult(Intent.createChooser(intent, "Select Cover Photo"), PICK_IMAGE_REQUEST);
     }
 
-    // Handle image picker result
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
             imageUri = data.getData();
-
-            // Set the image preview to selected image
             try {
                 Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
                 imagePreview.setImageBitmap(bitmap);
@@ -107,68 +106,78 @@ public class AddJournalActivity extends AppCompatActivity {
         }
     }
 
-    // Upload image to Supabase Storage
-    private void uploadImageToSupabase(Uri imageUri) {
-        // Get the Supabase Storage client
-        StorageClient storageClient = supabaseClient.storage().from("images");  // Assuming 'images' is your bucket name
+    private void uploadImageThenSaveJournal(Uri uri) {
+        new Thread(() -> {
+            try {
+                InputStream inputStream = getContentResolver().openInputStream(uri);
+                String fileName = UUID.randomUUID().toString() + ".jpg";
+                URL url = new URL("https://etfmwhmqmnnsatkirrkx.supabase.co/storage/v1/object/images/" + fileName);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestMethod("PUT");
+                conn.setRequestProperty("Authorization", "Bearer " + userToken);
+                conn.setRequestProperty("apikey", SupabaseService.getApiKey());
+                conn.setRequestProperty("Content-Type", "image/jpeg");
+                conn.setDoOutput(true);
 
-        // Convert the URI to an InputStream
+                try (OutputStream os = conn.getOutputStream()) {
+                    byte[] buffer = new byte[4096];
+                    int bytesRead;
+                    while ((bytesRead = inputStream.read(buffer)) != -1) {
+                        os.write(buffer, 0, bytesRead);
+                    }
+                }
+
+                int responseCode = conn.getResponseCode();
+                if (responseCode == 200 || responseCode == 201) {
+                    String imageUrl = "https://etfmwhmqmnnsatkirrkx.supabase.co/storage/v1/object/public/images/" + fileName;
+                    saveJournalToSupabase(imageUrl);
+                } else {
+                    runOnUiThread(() -> Toast.makeText(this, "Image upload failed!", Toast.LENGTH_SHORT).show());
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                runOnUiThread(() -> Toast.makeText(this, "Error uploading image", Toast.LENGTH_SHORT).show());
+            }
+        }).start();
+    }
+    public String saveImageToInternalStorage(Bitmap bitmap, String filename) {
         try {
-            InputStream inputStream = getContentResolver().openInputStream(imageUri);
-            String fileName = UUID.randomUUID().toString() + ".jpg"; // Generate a unique file name
-
-            // Upload image to Supabase Storage
-            storageClient.upload(fileName, inputStream)
-                    .onSuccess(result -> {
-                        // Get the public URL of the uploaded image
-                        String imageUrl = result.publicUrl();
-                        saveJournalToSupabase(imageUrl); // Save the journal with the image URL
-                    })
-                    .onFailure(exception -> {
-                        // Handle failure
-                        Toast.makeText(this, "Image upload failed: " + exception.getMessage(), Toast.LENGTH_SHORT).show();
-                    });
-        } catch (IOException e) {
+            File file = new File(getFilesDir(), filename);
+            FileOutputStream fos = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+            fos.close();
+            return file.getAbsolutePath();
+        } catch (Exception e) {
             e.printStackTrace();
-            Toast.makeText(this, "Error opening image", Toast.LENGTH_SHORT).show();
+            return null;
         }
     }
 
-    // Save journal to Supabase
     private void saveJournalToSupabase(String imageUrl) {
-        // Get Supabase session and user
-        GotrueSession session = supabaseClient.auth.getSession();
-        User currentUser = session.getUser();
-
-        if (currentUser == null) {
-            Toast.makeText(this, "User is not authenticated", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        // Generate a unique journal ID
         String journalId = UUID.randomUUID().toString();
+        String title = editTitle.getText().toString();
+        String description = editDescription.getText().toString();
 
-        // Prepare the data to insert into Supabase table
-        SupabaseTable journalsTable = supabaseClient.from("journals");
 
-        try {
-            journalsTable.insert()
-                    .values(
-                            "id", journalId,
-                            "title", editTitle.getText().toString(),
-                            "description", editDescription.getText().toString(),
-                            "user_id", currentUser.getId(),
-                            "image_name", imageUrl, // Save the image URL
-                            "entry_count", 0 // Set initial entry count to 0
-                    )
-                    .execute();
+        new Thread(() -> {
+            int response = SupabaseService.insertJournal(
+                    userToken,
+                    journalId,
+                    userId,
+                    title,
+                    description,
+                    imageUrl != null ? imageUrl : ""
+            );
 
-            Toast.makeText(this, "Journal created successfully", Toast.LENGTH_SHORT).show();
-            finish(); // Close the activity and return to the homepage
-
-        } catch (SupabaseException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Failed to create journal", Toast.LENGTH_SHORT).show();
-        }
+            runOnUiThread(() -> {
+                if (response == 201 || response == 200) {
+                    Toast.makeText(this, "Journal created successfully", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    Toast.makeText(this, "Failed to create journal. Code: " + response, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }).start();
     }
 }

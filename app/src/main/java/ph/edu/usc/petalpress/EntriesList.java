@@ -59,6 +59,18 @@ public class EntriesList extends AppCompatActivity {
             finish(); // ✅ Optional: prevents returning to EntriesList
         });
 
+        Button addEntryButton = findViewById(R.id.newEntryButton);
+        addEntryButton.setOnClickListener(v ->
+
+        {
+            Intent intent = new Intent(EntriesList.this, EntryStartActivity.class);
+            intent.putExtra("journal_id", journalId);
+            intent.putExtra("journal_title", getIntent().getStringExtra("journal_title"));
+            intent.putExtra("journal_description", getIntent().getStringExtra("journal_description"));
+            intent.putExtra("journal_image_path", getIntent().getStringExtra("journal_image_path")); // if applicable
+            startActivity(intent);
+        });
+
         // 🖼 Log received Intent values
         String journalTitleStr = getIntent().getStringExtra("journal_title");
         String description = getIntent().getStringExtra("journal_description");
@@ -87,7 +99,8 @@ public class EntriesList extends AppCompatActivity {
         searchBar = findViewById(R.id.searchBar); // The ID of your search bar EditText
         searchBar.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+            }
 
             @Override
             public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
@@ -95,7 +108,8 @@ public class EntriesList extends AppCompatActivity {
             }
 
             @Override
-            public void afterTextChanged(Editable editable) {}
+            public void afterTextChanged(Editable editable) {
+            }
         });
 
         // ❌ Validate journal_id
@@ -179,11 +193,19 @@ public class EntriesList extends AppCompatActivity {
 
     // Delete the journal (connect with Supabase to delete from the database)
     private void deleteJournal() {
-        // Your code to delete the journal from Supabase
-        Log.d(TAG, "Journal " + journalId + " deleted.");
+        JournalRepository repo = new JournalRepository(this);
+        repo.deleteJournal(journalId);
+        EntryRepository entryRepo = new EntryRepository(this);
+        entryRepo.deleteEntriesByJournal(journalId);
+
+
         Toast.makeText(this, "Journal deleted", Toast.LENGTH_SHORT).show();
-        finish(); // Optionally finish the activity after deletion
+        Log.d(TAG, "Journal " + journalId + " deleted locally.");
+        finish(); // Close this activity
     }
+
+
+
 
     // Format the date to display
     private String formatDate(String isoDate) {

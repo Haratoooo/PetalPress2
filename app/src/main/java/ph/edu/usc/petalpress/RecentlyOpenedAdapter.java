@@ -2,6 +2,7 @@ package ph.edu.usc.petalpress;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +12,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import java.io.File;
 import java.util.List;
 
 public class RecentlyOpenedAdapter extends RecyclerView.Adapter<RecentlyOpenedAdapter.ViewHolder> {
@@ -34,20 +37,25 @@ public class RecentlyOpenedAdapter extends RecyclerView.Adapter<RecentlyOpenedAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Journal journal = journalList.get(position);
 
-        holder.titleTextView.setText(journal.getTitle());
-        holder.entryCountTextView.setText(journal.getEntryCount() + " entries");
-        holder.imageView.setImageResource(journal.getImageResId());
+        holder.titleTextView.setText(journal.title);
+        holder.entryCountTextView.setText("Created: " + journal.createdAt);
+
+        if (journal.imagePath != null && new File(journal.imagePath).exists()) {
+            holder.imageView.setImageBitmap(BitmapFactory.decodeFile(journal.imagePath));
+        } else {
+            holder.imageView.setImageResource(R.drawable.homepage_background); // fallback image
+        }
 
         holder.itemView.setOnClickListener(v -> {
-            Log.d("RecentlyOpenedAdapter", "Sending intent - title: " + journal.getTitle() +
-                    ", desc: " + journal.getDescription() +
-                    ", imageResId: " + journal.getImageResId());
+            Log.d("RecentlyOpenedAdapter", "Sending intent - title: " + journal.title +
+                    ", desc: " + journal.description +
+                    ", imagePath: " + journal.imagePath);
 
             Intent intent = new Intent(context, EntriesList.class);
-            intent.putExtra("journal_id", journal.getId());
-            intent.putExtra("journal_title", journal.getTitle());
-            intent.putExtra("journal_description", journal.getDescription());
-            intent.putExtra("journal_image", journal.getImageResId());
+            intent.putExtra("journal_id", journal.id);
+            intent.putExtra("journal_title", journal.title);
+            intent.putExtra("journal_description", journal.description);
+            intent.putExtra("journal_image_path", journal.imagePath);
 
             context.startActivity(intent);
         });
