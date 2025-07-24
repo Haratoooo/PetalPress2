@@ -65,11 +65,27 @@ public class Homepage extends AppCompatActivity {
             updatePageIndicator();
         });
 
-        ImageView navSettings = findViewById(R.id.nav_settings);
-        navSettings.setOnClickListener(v -> startActivity(new Intent(this, Settings.class)));
+        // Set up the Home button (navigate to Homepage)
+        ImageView navAddJournal = findViewById(R.id.nav_add_journal);
+        navAddJournal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to Homepage
+                Intent homeIntent = new Intent(Homepage.this, AddJournalActivity.class);
+                startActivity(homeIntent);
+            }
+        });
 
-        ImageView addJournal = findViewById(R.id.nav_add_journal);
-        addJournal.setOnClickListener(v -> startActivity(new Intent(this, AddJournalActivity.class)));
+        // Set up the Settings button (navigate to Settings)
+        ImageView navSettings = findViewById(R.id.nav_settings);
+        navSettings.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Navigate to Settings
+                Intent settingsIntent = new Intent(Homepage.this, Settings.class);
+                startActivity(settingsIntent);
+            }
+        });
 
         searchBar = findViewById(R.id.searchBar);
         searchBar.addTextChangedListener(new TextWatcher() {

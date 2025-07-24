@@ -11,7 +11,7 @@
         android:layout_height="match_parent"
         android:scaleType="centerCrop"
         android:src="@drawable/rounded_card_bg"
-        android:alpha="0.3" />
+         android:alpha="0.9"/>
 
     <!-- Foreground content -->
     <RelativeLayout
@@ -37,9 +37,10 @@
             android:layout_toEndOf="@id/notificationIcon"
             android:layout_alignTop="@id/notificationIcon"
             android:text="Journal Entry"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/holo_purple"
             android:textStyle="bold"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+           />
 
         <!-- Description -->
         <TextView
@@ -49,9 +50,10 @@
             android:layout_below="@id/notificationTitle"
             android:layout_alignStart="@id/notificationTitle"
             android:text="Don't forget to log your thoughts today in 'Morning Whispers.'"
-            android:textColor="@android:color/white"
+            android:textColor="@android:color/holo_purple"
             android:textSize="12sp"
-            android:layout_marginTop="4dp" />
+            android:layout_marginTop="4dp"
+            />
 
         <!-- Timestamp -->
         <TextView
