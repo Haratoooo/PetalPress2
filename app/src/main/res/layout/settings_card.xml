@@ -6,9 +6,9 @@
 
     <!-- Background image with reduced opacity -->
     <ImageView
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:src="@drawable/rounded_card_bg"
+        android:src="@drawable/rectangle_card_bg"
         android:scaleType="centerCrop"
         android:alpha="0.3" />
 
@@ -24,7 +24,7 @@
             android:id="@+id/icon"
             android:layout_width="32dp"
             android:layout_height="32dp"
-            android:src="@drawable/ic_user" />
+            android:src="@drawable/ic_bell" />
 
         <LinearLayout
             android:layout_marginStart="12dp"
@@ -35,7 +35,7 @@
 
             <TextView
                 android:id="@+id/title"
-                android:text="Title"
+                android:text="Notifications Card"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
@@ -44,16 +44,18 @@
 
             <TextView
                 android:id="@+id/description"
-                android:text="Description"
+                android:text="Check your notifications"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/white"
                 android:textSize="12sp" />
+
         </LinearLayout>
 
         <ImageView
             android:layout_width="24dp"
             android:layout_height="24dp"
             android:src="@drawable/ic_arrow_right" />
+
     </LinearLayout>
 </FrameLayout>
